@@ -1,0 +1,25 @@
+{
+    "name": "sparklink/email-errors-bundle",
+    "description": "Symfony bundle to send errors by email",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "version": "1.0.0",
+    "homepage": "https://github.com/sparklink-pro/EmailErrorsBundle",
+    "autoload": {
+        "psr-4": {
+            "Sparklink\\EmailErrorsBundle\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Vincent Bouzeran",
+            "email": "vincent@sparklink.pro"
+        }
+    ],
+    "require": {},
+    "extra": {
+        "symfony": {
+            "allow-contrib": "true"
+        }
+    }
+}
