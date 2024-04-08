@@ -2,15 +2,11 @@ services:
     email_errors.exception_listener:
         class: Sparklink\EmailErrorsBundle\EventListener\ExceptionListener
         tags:
-            - {
-                  name: "kernel.event_listener",
-                  event: "kernel.exception",
-                  method: "onKernelException",
-              }
+            - { name: "kernel.event_listener", event: "kernel.exception", method: "onKernelException" }
         arguments:
             - !abstract "email service to use to send the email"
             - "@twig"
             - "%email_errors.from%"
             - "%email_errors.to%"
             - "%email_errors.subject%"
-            - "%email_errors.email_errors.ignored_exception_classes%"
+            - "%email_errors.ignored_exception_classes%"
