@@ -4,6 +4,11 @@ services:
         tags:
             - { name: "kernel.event_listener", event: "kernel.exception", method: "onKernelException" }
         arguments:
+            - "@email_errors.exception_mailer"
+
+    email_errors.exception_mailer:
+        class: Sparklink\EmailErrorsBundle\ExceptionMailer\ExceptionMailer
+        arguments:
             - !abstract "email service to use to send the email"
             - "@twig"
             - "%email_errors.from%"

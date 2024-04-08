@@ -1,0 +1,8 @@
+services:
+  email_errors.graphql_exception_listener:
+    class: Sparklink\EmailErrorsBundle\GraphQL\ErrorsListener
+    tags:
+      - { name: kernel.event_listener, event: graphql.post_executor, method: onPostExecutor }
+    arguments:
+      - "@email_errors.exception_mailer"
+      - "@request_stack"

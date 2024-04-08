@@ -21,11 +21,12 @@ class EmailErrorsBundle extends AbstractBundle
                 ->scalarNode('from')->isRequired()->end()
                 ->scalarNode('to')->isRequired()->end()
                 ->scalarNode('subject')->defaultValue('Exception')->end()
+                ->scalarNode('graphql')->defaultFalse()->end()
                 ->arrayNode('ignored_exception_classes')
                     ->prototype('scalar')
-                    ->end()
                 ->end()
             ->end()
+        ->end()
         ;
     }
 
@@ -39,8 +40,12 @@ class EmailErrorsBundle extends AbstractBundle
         $containerConfigurator->import('../config/services.yaml');
 
         $containerConfigurator->services()
-            ->get('email_errors.exception_listener')
+            ->get('email_errors.exception_mailer')
             ->arg(0, new Reference($config['mailer_service']))
         ;
+
+        if ($config['graphql']) {
+            $containerConfigurator->import('../config/graphql.yaml');
+        }
     }
 }

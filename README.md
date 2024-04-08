@@ -59,6 +59,8 @@ email_errors:
   from: "%env(resolve:MAILER_ERRORS_FROM)%"
   to: "%env(resolve:MAILER_ERRORS_TO)%"
   ignored_exception_class: [] 
+  graphql: true
 ```
 
-You can ignore some exceptions by adding the class name in the `ignored_exception_class` array.
+You can ignore some exceptions by adding the class name in the `ignored_exception_class` array.  
+If `graphql` is set to `true`, the bundle will also handle errors from the `GraphQLBundle` and send them. 
