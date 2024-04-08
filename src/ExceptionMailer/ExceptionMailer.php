@@ -98,8 +98,6 @@ class ExceptionMailer
             $panels[] = new DataPanel('Session', $request->getSession()->all());
         }
 
-        dump($panels);
-
         return $panels;
     }
 }
