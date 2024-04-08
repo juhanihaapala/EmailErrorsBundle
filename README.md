@@ -55,7 +55,10 @@ Create a new file `config/packages/email_errors.yaml` and add the following conf
 ```yaml
 # config/packages/email_errors.yaml
 email_errors:
-  enabled: "%kernel.debug%"
+  enabled: "%kernel.debug%"           
   from: "%env(resolve:MAILER_ERRORS_FROM)%"
   to: "%env(resolve:MAILER_ERRORS_TO)%"
+  ignored_exception_class: [] 
 ```
+
+You can ignore some exceptions by adding the class name in the `ignored_exception_class` array.

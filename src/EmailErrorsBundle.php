@@ -21,6 +21,10 @@ class EmailErrorsBundle extends AbstractBundle
                 ->scalarNode('from')->isRequired()->end()
                 ->scalarNode('to')->isRequired()->end()
                 ->scalarNode('subject')->defaultValue('Exception')->end()
+                ->arrayNode('ignored_exception_classes')
+                    ->prototype('scalar')
+                    ->end()
+                ->end()
             ->end()
         ;
     }
@@ -30,6 +34,7 @@ class EmailErrorsBundle extends AbstractBundle
         $containerBuilder->setParameter('email_errors.from', $config['from']);
         $containerBuilder->setParameter('email_errors.to', $config['to']);
         $containerBuilder->setParameter('email_errors.subject', $config['subject']);
+        $containerBuilder->setParameter('email_errors.ignored_exception_classes', $config['ignored_exception_classes']);
 
         $containerConfigurator->import('../config/services.yaml');
 
