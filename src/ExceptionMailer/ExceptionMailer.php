@@ -24,7 +24,7 @@ class ExceptionMailer
     ) {
     }
 
-    public function sendException(\Exception $exception, ?Request $request = null, ?HttpKernelInterface $kernel = null)
+    public function sendException(\Throwable $exception, ?Request $request = null, ?HttpKernelInterface $kernel = null)
     {
         if (\in_array($exception::class, $this->ignoredClasses)) {
             return;

@@ -3,7 +3,7 @@
     "description": "Symfony bundle to send errors by email",
     "type": "symfony-bundle",
     "license": "MIT",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "homepage": "https://github.com/sparklink-pro/EmailErrorsBundle",
     "autoload": {
         "psr-4": {
