@@ -25,6 +25,9 @@ class EmailErrorsBundle extends AbstractBundle
                 ->arrayNode('ignored_exception_classes')
                     ->prototype('scalar')
                 ->end()
+                ->arrayNode('ignored_exception_messages')
+                    ->prototype('scalar')
+                ->end()
             ->end()
         ->end()
         ;
@@ -39,6 +42,7 @@ class EmailErrorsBundle extends AbstractBundle
         $containerBuilder->setParameter('email_errors.to', $config['to']);
         $containerBuilder->setParameter('email_errors.subject', $config['subject']);
         $containerBuilder->setParameter('email_errors.ignored_exception_classes', $config['ignored_exception_classes']);
+        $containerBuilder->setParameter('email_errors.ignored_exception_messages', $config['ignored_exception_messages']);
 
         if (!$enabled) {
             return;

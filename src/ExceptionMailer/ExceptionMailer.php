@@ -22,7 +22,8 @@ class ExceptionMailer
         protected string $from,
         protected string $to,
         protected string $subject,
-        protected array $ignoredClasses = []
+        protected array $ignoredClasses = [],
+        protected array $ignoredMessages = [],
     ) {
     }
 
@@ -31,6 +32,12 @@ class ExceptionMailer
         try {
             if (\in_array($exception::class, $this->ignoredClasses)) {
                 return;
+            }
+
+            foreach ($this->ignoredMessages as $ignoredMessage) {
+                if (str_contains($exception->getMessage(), $ignoredMessage)) {
+                    return;
+                }
             }
 
             $mail = new Email();
