@@ -19,16 +19,16 @@ class DataPanel
 
     public function getTitle(): string
     {
-        return $this->title;
+        return $this->title ?? "";
     }
 
     public function getData(): array
     {
-        return $this->data;
+        return $this->data ?? [];
     }
 
     public function getType(): string
     {
-        return $this->type;
+        return $this->type ?? "";
     }
 }

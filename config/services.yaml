@@ -11,6 +11,7 @@ services:
         arguments:
             - !abstract "email service to use to send the email"
             - "@twig"
+            - "@?logger"
             - "%email_errors.from%"
             - "%email_errors.to%"
             - "%email_errors.subject%"

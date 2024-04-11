@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sparklink\EmailErrorsBundle\ExceptionMailer;
 
+use Psr\Log\LoggerInterface;
 use Sparklink\EmailErrorsBundle\Twig\DataPanel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -17,6 +18,7 @@ class ExceptionMailer
     public function __construct(
         protected MailerInterface $mailer,
         protected Environment $twig,
+        protected ?LoggerInterface $logger,
         protected string $from,
         protected string $to,
         protected string $subject,
@@ -26,31 +28,35 @@ class ExceptionMailer
 
     public function sendException(\Throwable $exception, ?Request $request = null, ?HttpKernelInterface $kernel = null)
     {
-        if (\in_array($exception::class, $this->ignoredClasses)) {
-            return;
-        }
+        try {
+            if (\in_array($exception::class, $this->ignoredClasses)) {
+                return;
+            }
 
-        $mail = new Email();
-        $mail->from(Address::create($this->from));
-        $mail->to(Address::create($this->to));
-        $mail->subject(sprintf('%s %s', $this->subject, $exception->getMessage()));
+            $mail = new Email();
+            $mail->from(Address::create($this->from));
+            $mail->to(Address::create($this->to));
+            $mail->subject(sprintf('%s %s', $this->subject, $exception->getMessage()));
 
-        $exceptions = [];
-        $exceptions[] = ['class' => $exception::class, 'instance' => $exception];
-
-        while ($exception = $exception->getPrevious()) {
+            $exceptions = [];
             $exceptions[] = ['class' => $exception::class, 'instance' => $exception];
+
+            while ($exception = $exception->getPrevious()) {
+                $exceptions[] = ['class' => $exception::class, 'instance' => $exception];
+            }
+
+            $mail->html($this->twig->render('@EmailErrors/exception.html.twig', [
+                'subject' => $this->subject,
+                'exceptions' => $exceptions,
+                'request' => $request,
+                'request_panels' => $request ? $this->getRequestDataPanels($request) : [],
+                'kernel' => $kernel,
+            ]));
+
+            $this->mailer->send($mail);
+        } catch (\Exception $e) {
+            $this->logger?->error('Error sending exception email', ['exception' => $e->getMessage()]);
         }
-
-        $mail->html($this->twig->render('@EmailErrors/exception.html.twig', [
-            'subject' => $this->subject,
-            'exceptions' => $exceptions,
-            'request' => $request,
-            'request_panels' => $request ? $this->getRequestDataPanels($request) : [],
-            'kernel' => $kernel,
-        ]));
-
-        $this->mailer->send($mail);
     }
 
     /**
