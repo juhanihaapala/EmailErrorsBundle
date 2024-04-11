@@ -33,14 +33,16 @@ class EmailErrorsBundle extends AbstractBundle
     public function loadExtension(array $config, ContainerConfigurator $containerConfigurator, ContainerBuilder $containerBuilder): void
     {
         $enabled = $config['enabled'];
-        if (!$enabled) {
-            return;
-        }
-
+        
+        $containerBuilder->setParameter('email_errors.enabled', $config['enabled']);
         $containerBuilder->setParameter('email_errors.from', $config['from']);
         $containerBuilder->setParameter('email_errors.to', $config['to']);
         $containerBuilder->setParameter('email_errors.subject', $config['subject']);
         $containerBuilder->setParameter('email_errors.ignored_exception_classes', $config['ignored_exception_classes']);
+
+        if (!$enabled) {
+            return;
+        }
 
         $containerConfigurator->import('../config/services.yaml');
 
