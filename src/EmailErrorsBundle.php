@@ -28,6 +28,9 @@ class EmailErrorsBundle extends AbstractBundle
                 ->arrayNode('ignored_exception_messages')
                     ->prototype('scalar')->end()
                 ->end()
+                ->arrayNode('ignored_ip_addresses')
+                    ->prototype('scalar')->end()
+                ->end()
             ->end()
         ->end()
         ;
@@ -36,13 +39,14 @@ class EmailErrorsBundle extends AbstractBundle
     public function loadExtension(array $config, ContainerConfigurator $containerConfigurator, ContainerBuilder $containerBuilder): void
     {
         $enabled = $config['enabled'];
-        
+
         $containerBuilder->setParameter('email_errors.enabled', $config['enabled']);
         $containerBuilder->setParameter('email_errors.from', $config['from']);
         $containerBuilder->setParameter('email_errors.to', $config['to']);
         $containerBuilder->setParameter('email_errors.subject', $config['subject']);
         $containerBuilder->setParameter('email_errors.ignored_exception_classes', $config['ignored_exception_classes']);
         $containerBuilder->setParameter('email_errors.ignored_exception_messages', $config['ignored_exception_messages']);
+        $containerBuilder->setParameter('email_errors.ignored_ip_addresses', $config['ignored_ip_addresses']);
 
         if (!$enabled) {
             return;

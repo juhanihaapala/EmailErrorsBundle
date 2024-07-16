@@ -17,3 +17,4 @@ services:
             - "%email_errors.subject%"
             - "%email_errors.ignored_exception_classes%"
             - "%email_errors.ignored_exception_messages%"
+            - "%email_errors.ignored_ip_addresses%"

@@ -24,19 +24,31 @@ class ExceptionMailer
         protected string $subject,
         protected array $ignoredClasses = [],
         protected array $ignoredMessages = [],
+        protected array $ignoredIpAddresses = [],
     ) {
     }
 
     public function sendException(\Throwable $exception, ?Request $request = null, ?HttpKernelInterface $kernel = null)
     {
         try {
+            // Ignored exceptions
             if (\in_array($exception::class, $this->ignoredClasses)) {
                 return;
             }
 
+            // Ignored exceptions messages
             foreach ($this->ignoredMessages as $ignoredMessage) {
                 if (str_contains($exception->getMessage(), $ignoredMessage)) {
                     return;
+                }
+            }
+
+            // Ignored IP addresses
+            if ($request) {
+                foreach ($request->getClientIps() as $ip) {
+                    if (\in_array($ip, $this->ignoredIpAddresses)) {
+                        return;
+                    }
                 }
             }
 
