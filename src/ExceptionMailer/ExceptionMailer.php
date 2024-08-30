@@ -119,7 +119,7 @@ class ExceptionMailer
             $panels[] = new DataPanel('Cookies', $request->cookies->all());
         }
 
-        if ($request->hasSession()) {
+        if ($request->hasSession(true)) {
             $panels[] = new DataPanel('Session', $request->getSession()->all());
         }
 
